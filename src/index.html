@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123c37">
+  <meta name="description" content="تطبيق عاطف وهبة لإدارة المكتب والإيصالات">
+  <title>عاطف وهبة | إدارة المكتب</title>
+</head>
+<body>
+  <header class="top"><div class="brand"><span class="brand-mark">ع</span><div><b>عاطف وهبة</b><small>إدارة الخدمات العامة</small></div></div><div class="account"><span id="connectionStatus" class="connection">غير متصل</span><button id="logoutButton" class="button button-quiet" hidden>خروج</button></div></header>
+  <main class="app">
+    <section id="loginView" class="card login-card">
+      <h1>تسجيل الدخول</h1><p class="muted">سجّل الدخول للوصول إلى قاعدة بيانات المكتب الآمنة.</p>
+      <form id="loginForm" class="form-grid"><label class="field full">البريد الإلكتروني<input id="email" type="email" autocomplete="username" required placeholder="name@example.com"></label><label class="field full">كلمة المرور<input id="password" type="password" autocomplete="current-password" required minlength="8"></label><button class="button full" type="submit">دخول</button><p id="loginMessage" class="message full" role="status"></p></form>
+      <p class="notice">إنشاء الحسابات يتم من لوحة تحكم Supabase بواسطة مسؤول المكتب؛ التسجيل العام غير متاح.</p>
+    </section>
+    <section id="appView" hidden>
+      <div class="welcome"><b>أهلاً بك في إدارة المكتب</b><span>الإيصالات متزامنة مع قاعدة البيانات عند الاتصال.</span></div>
+      <nav class="tabs" aria-label="أقسام التطبيق"><button class="tab active" data-view="calculator">🧮<span>التقسيط</span></button><button class="tab" data-view="staff">👥<span>الموظفون</span></button><button class="tab" data-view="newReceipt">🧾<span>إيصال جديد</span></button><button class="tab" data-view="history">📚<span>سجل الإيصالات</span></button></nav>
+      <section id="calculator" class="view active"><h2>حاسبة التقسيط</h2><p class="muted">احسب إجمالي السعر مع هامش الربح والضريبة.</p><div class="card form-grid"><label class="field full">السعر الأساسي (جنيه)<input id="price" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="مثال: 5000"></label><label class="field">هامش الربح (%)<input id="profitRate" type="number" min="0" step="0.01" value="20"></label><label class="field">الضريبة (%)<input id="taxRate" type="number" min="0" step="0.01" value="5"></label><button class="button full" id="calculateButton">احسب الإجمالي</button><output id="calculationResult" class="result full">أدخل السعر والنسب لعرض تفاصيل الحساب.</output><p class="notice full">النسب أمثلة قابلة للتعديل؛ تحقق من الرسوم والضرائب المعتمدة قبل تقديم السعر.</p></div></section>
+      <section id="staff" class="view"><h2>حسابات الموظفين</h2><p class="muted">حساب عهدة الموظف والعمولة.</p><div class="card form-grid"><label class="field full">اسم الموظف<input id="employeeName" autocomplete="name"></label><label class="field">المبالغ المستلمة<input id="received" type="number" min="0" step="0.01" value="0"></label><label class="field">المبالغ المصروفة<input id="spent" type="number" min="0" step="0.01" value="0"></label><label class="field">إجمالي المبيعات<input id="sales" type="number" min="0" step="0.01" value="0"></label><label class="field">العمولة (%)<input id="commissionRate" type="number" min="0" step="0.01" value="0.9"></label><button class="button full" id="staffButton">احسب العهدة والعمولة</button><output id="staffResult" class="result full">أدخل البيانات لعرض نتيجة الحساب.</output></div></section>
+      <section id="newReceipt" class="view"><h2>تسجيل إيصال</h2><p class="muted">الإيصال يثبت تسجيل المعاملة، وليس بالضرورة إتمامها أو سدادها.</p><form id="receiptForm" class="card form-grid"><label class="field full">اسم العميل *<input id="customer" required autocomplete="name" maxlength="120"></label><label class="field">رقم الهاتف<input id="phone" type="tel" inputmode="tel" maxlength="30"></label><label class="field">المبلغ (جنيه)<input id="amount" type="number" min="0" step="0.01" inputmode="decimal"></label><label class="field full">تفاصيل الخدمة *<input id="service" required maxlength="250"></label><label class="field full">حالة المعاملة<select id="receiptStatus"><option>قيد المتابعة</option><option>مكتملة</option><option>تحتاج مستندات</option><option>ملغاة</option></select></label><button class="button full" type="submit">حفظ وإصدار الإيصال</button><p id="receiptMessage" class="message full" role="status"></p><p class="notice full">لا تدخل أرقاماً سرية أو بيانات بطاقات الدفع.</p></form></section>
+      <section id="history" class="view"><h2>سجل الإيصالات</h2><p class="muted">سجل مشترك للمستخدمين المخولين بحساب المكتب.</p><input id="search" class="search" type="search" placeholder="ابحث باسم العميل أو الخدمة…" aria-label="البحث في الإيصالات"><div id="receiptList" class="receipt-list"><p class="muted">جارٍ تحميل الإيصالات…</p></div><button id="refreshButton" class="button button-light full">تحديث السجل</button><button id="exportButton" class="button button-light full">تصدير نسخة JSON</button></section>
+      <p class="footer-note">احرص على إنشاء كلمات مرور قوية وإدارة صلاحيات مستخدمي قاعدة البيانات بعناية.</p>
+    </section>
+  </main>
+  <dialog id="receiptDialog"><div class="dialog-head"><b>إيصال المعاملة</b><button id="closeDialog" class="button button-light">إغلاق</button></div><pre id="receiptPreview"></pre><div class="dialog-actions"><button id="shareButton" class="button">مشاركة</button><button id="printButton" class="button button-light">طباعة / PDF</button></div></dialog>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
