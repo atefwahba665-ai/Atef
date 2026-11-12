@@ -22,6 +22,9 @@ jobs:
           pip install --upgrade pip
           pip install buildozer cython==0.29.36
 
+      - name: Download Android SDK (first pass)
+        run: buildozer android debug || true
+
       - name: Accept Android SDK licenses
         run: |
           mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
